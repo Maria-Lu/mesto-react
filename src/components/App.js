@@ -1,54 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
-import { editAvatarPopupContent, editProfilePopupContent, addPlacePopupContent,
-        confirmPopupContent } from '../utils/popupContents'
-
+import {
+  editAvatarFormElements,
+  editProfileFormElements,
+  addPlaceFormElements,
+  confirmFormElements,
+} from './PopupFormElements';
 
 function App() {
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
-  const [isConfirmPopupOpen, setConfirmPopupOpen] = React.useState(false);
-  const [popupContent, setPopupContent] = React.useState(<></>);
-  const [popupTitle, setPopupTitle] = React.useState('');
-  const [popupName, setPopupName] = React.useState('');
-  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [isImagePopupOpen, setImagePopupOpen] = useState(false);
+  const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
+  const [popupFormElements, setPopupFormElements] = useState(<></>);
+  const [popupTitle, setPopupTitle] = useState('');
+  const [popupFormName, setPopupFormName] = useState('');
+  const [selectedCard, setSelectedCard] = useState({});
 
   function handleEditAvatarClick() {
-    setPopupContent(editAvatarPopupContent);
+    setPopupFormElements(editAvatarFormElements);
     setPopupTitle('Обновить аватар');
-    setPopupName('edit-avatar');
+    setPopupFormName('edit-avatar');
     setEditAvatarPopupOpen(true);
   }
 
   function handleEditProfileClick() {
-    setPopupContent(editProfilePopupContent);
+    setPopupFormElements(editProfileFormElements);
     setPopupTitle('Редактировать профиль');
-    setPopupName('edit-profile');
+    setPopupFormName('edit-profile');
     setEditProfilePopupOpen(true);
   }
 
   function handleAddPlaceClick() {
-    setPopupContent(addPlacePopupContent);
+    setPopupFormElements(addPlaceFormElements);
     setPopupTitle('Новое место');
-    setPopupName('add-place');
+    setPopupFormName('add-place');
     setAddPlacePopupOpen(true);
   }
 
-  function handleCardImageClick(card){
+  function handleCardImageClick(card) {
     setSelectedCard(card);
     setImagePopupOpen(true);
   }
 
   function handleDeleteCardClick() {
-    setPopupContent(confirmPopupContent);
+    setPopupFormElements(confirmFormElements);
     setPopupTitle('Вы уверены?');
-    setPopupName('confirm-popup');
+    setPopupFormName('confirm');
     setConfirmPopupOpen(true);
   }
 
@@ -62,7 +65,7 @@ function App() {
 
   return (
     <div className="page">
-      <Header/>
+      <Header />
       <Main
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
@@ -70,20 +73,26 @@ function App() {
         onCardClick={handleCardImageClick}
         onCardDelete={handleDeleteCardClick}
       />
-      <Footer/>
+      <Footer />
       <PopupWithForm
-        name={popupName}
+        name={popupFormName}
         title={popupTitle}
-        isOpen={isEditProfilePopupOpen || isAddPlacePopupOpen || isEditAvatarPopupOpen || isConfirmPopupOpen}
-        children={popupContent}
+        isOpen={
+          isEditProfilePopupOpen ||
+          isAddPlacePopupOpen ||
+          isEditAvatarPopupOpen ||
+          isConfirmPopupOpen
+        }
         onClose={closeAllPopups}
-      />
+      >
+        {popupFormElements}
+      </PopupWithForm>
       <ImagePopup
         card={selectedCard}
         isOpen={isImagePopupOpen}
         onClose={closeAllPopups}
       />
-  </div>
+    </div>
   );
 }
 

@@ -9,4 +9,6 @@
   -moz-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }

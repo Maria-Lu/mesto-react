@@ -4,7 +4,7 @@ class Api {
     this._baseUrl = baseUrl;
   }
 
-  getInitialCards() {
+  getCards() {
     return this._sendRequest('/cards', 'GET');
   }
 
@@ -44,23 +44,21 @@ class Api {
     if (body) {
       options.body = JSON.stringify(body);
     }
-    return fetch(`${this._baseUrl}${path}`, options)
-             .then((res) => {
-               if (res.ok) {
-                 return res.json();
-               }
-               return Promise.reject(`Ошибка: ${res.status}${res.statusText}`);
-              });
+    return fetch(`${this._baseUrl}${path}`, options).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}${res.statusText}`);
+    });
   }
-
 }
 
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-21',
   headers: {
     authorization: '4a378053-5042-44e1-a8f6-f02a12235a31',
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 export default api;

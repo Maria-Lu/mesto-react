@@ -16,4 +16,5 @@
 
 .profile__overlay:hover {
   opacity: 1;
+  cursor: pointer;
 }
