@@ -1,8 +1,16 @@
-import React from 'react';
-
 function ImagePopup({ card, isOpen, onClose }) {
+
+  function handleOverlayClose(evt) {
+    if (evt.target === evt.currentTarget) {
+      onClose();
+    }
+  }
+
   return (
-    <section className={`popup preview-popup ${isOpen ? 'popup_opened' : ''}`}>
+    <section
+      className={`popup preview-popup ${isOpen ? 'popup_opened' : ''}`}
+      onClick={handleOverlayClose}
+    >
       <div className="preview-popup__container">
         <button
           className="button popup__button-close"

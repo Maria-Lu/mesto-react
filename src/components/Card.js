@@ -1,33 +1,57 @@
-import React from 'react';
+import { useContext } from 'react';
+import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
-function Card(props) {
+function Card({
+  card,
+  onCardClick,
+  onCardDeleteButtonClick,
+  onCardLike
+}) {
+  const currentUser = useContext(CurrentUserContext);
+
+  const isOwn = card.owner._id === currentUser._id;
+  const isLiked = card.likes.some((like) => like._id === currentUser._id);
+  const likeButtonClassName = (`button element__button-like ${
+    isLiked ? 'element__button-like_active' : ''
+  }`);
+
   function handleCardClick() {
-    props.onCardClick(props.card);
+    onCardClick(card);
   }
 
   function handleDeleteClick() {
-    props.onCardDelete(props.card);
+    onCardDeleteButtonClick(card);
+  }
+
+  function handleCardLike() {
+    onCardLike(card);
   }
 
   return (
-    <article className="element" key={props.card._id}>
-      <button
-        className="button element__button-trash"
-        type="reset"
-        onClick={handleDeleteClick}
-      ></button>
+    <article className="element" key={card._id}>
+      {isOwn && (
+        <button
+          className="button element__button-trash"
+          type="reset"
+          onClick={handleDeleteClick}
+        ></button>
+      )}
       <div className="element__image-container">
         <img
           className="element__image"
-          src={props.card.link}
-          alt={props.card.name}
+          src={card.link}
+          alt={card.name}
           onClick={handleCardClick}
         />
       </div>
-      <h2 className="element__title">{props.card.name}</h2>
+      <h2 className="element__title">{card.name}</h2>
       <div className="element__like-container">
-        <button className="button element__button-like" type="button"></button>
-        <span className="element__like-counter">{props.card.likes.length}</span>
+        <button
+          onClick={handleCardLike}
+          className={likeButtonClassName}
+          type="button"
+        ></button>
+        <span className="element__like-counter">{card.likes.length}</span>
       </div>
     </article>
   );

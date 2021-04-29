@@ -16,12 +16,12 @@ class Api {
     return this._sendRequest('/users/me', 'PATCH', newUserData);
   }
 
-  likeCard(cardId) {
-    return this._sendRequest(`/cards/likes/${cardId}`, 'PUT');
-  }
-
-  unlikeCard(cardId) {
-    return this._sendRequest(`/cards/likes/${cardId}`, 'DELETE');
+  toggleCardLike(cardId, isLiked){
+    if(isLiked){
+      return this._sendRequest(`/cards/likes/${cardId}`, 'PUT');
+    } else {
+      return this._sendRequest(`/cards/likes/${cardId}`, 'DELETE');
+    }
   }
 
   addNewCard(userCardData) {
@@ -48,7 +48,7 @@ class Api {
       if (res.ok) {
         return res.json();
       }
-      return Promise.reject(`Ошибка: ${res.status}${res.statusText}`);
+      return Promise.reject(`Ошибка: ${res.status} ${res.statusText}`);
     });
   }
 }
